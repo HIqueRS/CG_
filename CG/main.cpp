@@ -59,7 +59,11 @@ int main() {
 	const GLubyte* renderer;
 	const GLubyte* version;
 
-	
+	std::map<int,char> teste;
+
+	teste[1]= 'c';
+
+	std::cout << teste.find(1)->second << std::endl;
 
 	/* geometry to use. these are 3 xyz points (9 floats total) to make a triangle
 	*/
@@ -74,6 +78,7 @@ int main() {
 
 	GLfloat points[108];
 	std::vector<glm::vec3*> Verts;
+	Group *gp;
 	
 
 	New_mesh.SetVertices(0.5f, 0.5f, 0.5f);
@@ -87,15 +92,20 @@ int main() {
 	New_mesh.SetVertices(0.5f, -0.5f, -0.5f);
 	
 	Verts = New_mesh.GetVerts();
+	gp = New_mesh.GetGroup("xis");
 
 	int i = 0;
 	for (int f = 0; f < 12; f++)
 	{
 		for (int v = 0; v < 3; v++)
 		{
-			points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->x;
+			/*points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->x;
 			points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->y;
-			points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->z;
+			points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->z;*/
+
+			points[i++] = Verts[gp->faces[f].Id_Vert[v]]->x;
+			points[i++] = Verts[gp->faces[f].Id_Vert[v]]->y;
+			points[i++] = Verts[gp->faces[f].Id_Vert[v]]->z;
 		}
 	}
 
