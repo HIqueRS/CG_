@@ -45,5 +45,6 @@ std::vector<glm::vec3*> Mesh::GetVerts()
 void Mesh::CreateGroup(std::string name)
 {
 	auxG = new Group;
-
+	auxG->SetName(name);
+	Gps.push_back(auxG);
 }
