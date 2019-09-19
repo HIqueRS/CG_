@@ -26,7 +26,7 @@ void Mesh::SetVertices(GLfloat x, GLfloat y, GLfloat z)
 
 void Mesh::BoxEx()
 {
-	SetVertices( 0.5f, 0.5f, 0.5f);
+	/*SetVertices( 0.5f, 0.5f, 0.5f);
 	SetVertices( -0.5f, 0.5f, 0.5f);
 	SetVertices( -0.5f, 0.5f, -0.5f);
 	SetVertices( 0.5f, 0.5f, -0.5f);
@@ -34,9 +34,9 @@ void Mesh::BoxEx()
 	SetVertices( 0.5f, -0.5f, 0.5f);
 	SetVertices( -0.5f, -0.5f, 0.5f);
 	SetVertices( -0.5f, -0.5f, -0.5f);
-	SetVertices( 0.5f, -0.5f, -0.5f);
+	SetVertices( 0.5f, -0.5f, -0.5f);*/
 
-	CreateGroup("xis");
+	/*CreateGroup("xis");
 	CreateFaceinGroup("xis", 0, 1, 2);
 	CreateFaceinGroup("xis", 2, 3, 0);
 	CreateFaceinGroup("xis", 4, 5, 6);
@@ -48,7 +48,7 @@ void Mesh::BoxEx()
 	CreateFaceinGroup("xis", 0, 3, 7);
 	CreateFaceinGroup("xis", 0, 4, 7);
 	CreateFaceinGroup("xis", 1, 2, 6);
-	CreateFaceinGroup("xis", 1, 5, 6);
+	CreateFaceinGroup("xis", 1, 5, 6);*/
 }
 
 std::vector<glm::vec3*> Mesh::GetVerts()

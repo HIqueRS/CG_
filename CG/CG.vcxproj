@@ -129,11 +129,13 @@
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ObjReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Face.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ObjReader.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="obj.txt" />

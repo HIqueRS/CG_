@@ -8,6 +8,8 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
 #include "Mesh.h"
 
@@ -17,6 +19,8 @@
 
 GLfloat rotationX = 0.0f;
 GLfloat rotationY = 0.0f;
+
+using namespace std;
 
 void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
@@ -54,6 +58,8 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 	}
 }
 
+
+
 int main() {
 	GLFWwindow* window = NULL;
 	const GLubyte* renderer;
@@ -79,9 +85,40 @@ int main() {
 	GLfloat points[108];
 	std::vector<glm::vec3*> Verts;
 	Group *gp;
+
+	string line;
+	ifstream myfile("cubo.txt"); // ifstream = padrão ios:in
+	
+	while (!myfile.eof())
+	{
+		getline(myfile, line);
+
+		stringstream sline;
+		sline << line;
+		string temp;
+
+		sline >> temp;
+		//cout << temp;
+		if (temp == "v")
+		{
+			float x1, y1, z1;
+			sline >> x1 >> y1 >> z1;
+			cout << x1 << y1 << z1;
+			New_mesh.SetVertices(x1, y1, z1);
+		}
+		else if (temp == "g")
+		{
+			string name;
+			sline >> name;
+			cout << name;
+			//New_mesh.CreateGroup(name);
+		}
+	}
+	
+	
 	
 
-	New_mesh.SetVertices(0.5f, 0.5f, 0.5f);
+	/*New_mesh.SetVertices(0.5f, 0.5f, 0.5f);
 	New_mesh.SetVertices(-0.5f, 0.5f, 0.5f);
 	New_mesh.SetVertices(-0.5f, 0.5f, -0.5f);
 	New_mesh.SetVertices(0.5f, 0.5f, -0.5f);
@@ -89,7 +126,23 @@ int main() {
 	New_mesh.SetVertices(0.5f, -0.5f, 0.5f);
 	New_mesh.SetVertices(-0.5f, -0.5f, 0.5f);
 	New_mesh.SetVertices(-0.5f, -0.5f, -0.5f);
-	New_mesh.SetVertices(0.5f, -0.5f, -0.5f);
+	New_mesh.SetVertices(0.5f, -0.5f, -0.5f);*/
+
+	New_mesh.CreateGroup("xis");
+	New_mesh.CreateFaceinGroup("xis", 0, 1, 2);
+	New_mesh.CreateFaceinGroup("xis", 2, 3, 0);
+	New_mesh.CreateFaceinGroup("xis", 4, 5, 6);
+	New_mesh.CreateFaceinGroup("xis", 6, 7, 4);
+	New_mesh.CreateFaceinGroup("xis", 0, 4, 5);
+	New_mesh.CreateFaceinGroup("xis", 5, 1, 0);
+	New_mesh.CreateFaceinGroup("xis", 2, 3, 6);
+	New_mesh.CreateFaceinGroup("xis", 3, 6, 7);
+	New_mesh.CreateFaceinGroup("xis", 0, 3, 7);
+	New_mesh.CreateFaceinGroup("xis", 0, 4, 7);
+	New_mesh.CreateFaceinGroup("xis", 1, 2, 6);
+	New_mesh.CreateFaceinGroup("xis", 1, 5, 6);
+
+
 	
 	Verts = New_mesh.GetVerts();
 	gp = New_mesh.GetGroup("xis");
