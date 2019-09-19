@@ -21,6 +21,8 @@ public:
 	void BoxEx();
 	std::vector<glm::vec3*> GetVerts();
 	void CreateGroup(std::string name);
+	void CreateFaceinGroup(std::string name,int ID1, int ID2, int ID3);
+	Group* GetGroup(std::string name);
 
 
 //protected:
@@ -30,6 +32,6 @@ public:
 	std::vector<Group*> Gps;
 
 	int NGps;
-	std::map<std::string, int> Nomes;
+	std::map<std::string, int > Nomes;
 };
 
