@@ -60,3 +60,8 @@ void Group::SetName(std::string N)
 {
 	Name = N;
 }
+
+void Group::SetMtl(std::string M)
+{
+	Mtl = M;
+}

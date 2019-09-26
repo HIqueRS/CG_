@@ -93,6 +93,8 @@ int main() {
 	{
 		getline(myfile, line);
 
+		string nameg;
+
 		stringstream sline;
 		sline << line;
 		string temp;
@@ -103,16 +105,89 @@ int main() {
 		{
 			float x1, y1, z1;
 			sline >> x1 >> y1 >> z1;
-			cout << x1 << y1 << z1;
+			//cout << x1 << y1 << z1;
 			New_mesh.SetVertices(x1, y1, z1);
 		}
-		else if (temp == "g")
+		if (temp == "g")
 		{
-			string name;
-			sline >> name;
-			cout << name;
-			//New_mesh.CreateGroup(name);
+			
+			sline >> nameg; //nome grupo
+			//cout << nameg ; 
+			New_mesh.CreateGroup(nameg);
+
+
+			
+			//getline(myfile, line);//proxima linha
+			//
+			//sline.clear();
+			//sline << line;
+			////string auxg;
+			//sline >> temp;
+			////cout << auxg;
+
+			//if (temp == "usemtl")
+			//{
+			//	string TempMtl;
+			//	sline >> TempMtl;
+			//	//cout << TempMtl;
+			//	New_mesh.SetMtlinGroup(nameg, TempMtl);
+
+			//	getline(myfile, line);//proxima linha
+			//	
+			//	sline.clear();
+			//	sline << line;
+			//	
+			//	sline >> temp;
+			//	cout << temp;
+			//}
+			//if (temp == "f")
+			//{
+			//	while (temp == "f")
+			//	{
+			//		cout << "aqui chegou";
+
+			//		int v1,v2,v3, t1, t2, t3, n1, n2, n3;
+
+			//		sline >> v1;//o primeiro é certo
+			//		
+			//		string auxF;
+			//		sline >> auxF;
+
+			//		if (auxF == "/")
+			//		{
+			//			sline >> auxF;
+			//			if (auxF != "/")
+			//			{
+
+			//			}
+			//		}
+			//		else 
+			//		{
+
+			//		}
+			//	}
+			//}
 		}
+		if (temp == "usemtl")
+		{
+			//nameg = "group";
+			string TempMtl;
+			sline >> TempMtl;
+			cout << nameg; //<< " " <<TempMtl;
+			
+
+			//New_mesh.SetMtlinGroup(nameg, TempMtl);
+
+			//getline(myfile, line);//proxima linha
+
+			//sline.clear();
+			//sline << line;
+
+			//sline >> temp;
+			//cout << temp;
+		}
+	
+
 	}
 	
 	
@@ -141,6 +216,8 @@ int main() {
 	New_mesh.CreateFaceinGroup("xis", 0, 4, 7);
 	New_mesh.CreateFaceinGroup("xis", 1, 2, 6);
 	New_mesh.CreateFaceinGroup("xis", 1, 5, 6);
+
+	//New_mesh.SetMtlinGroup("xis", "ue");
 
 
 	

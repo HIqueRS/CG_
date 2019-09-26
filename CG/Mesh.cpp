@@ -74,8 +74,12 @@ void Mesh::CreateFaceinGroup(std::string name, int ID1, int ID2, int ID3)
 	Gps[Nomes.find(name)->second]->CreateFace(ID1, ID2, ID3);
 }
 
+void Mesh::SetMtlinGroup(std::string name, std::string Mtl)
+{
+	Gps[Nomes.find(name)->second]->SetMtl(Mtl);
+}
+
 Group* Mesh::GetGroup(std::string name)
 {
-	
 	return Gps[Nomes.find(name)->second];
 }

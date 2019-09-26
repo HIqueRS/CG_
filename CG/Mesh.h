@@ -22,6 +22,7 @@ public:
 	std::vector<glm::vec3*> GetVerts();
 	void CreateGroup(std::string name);
 	void CreateFaceinGroup(std::string name,int ID1, int ID2, int ID3);
+	void SetMtlinGroup(std::string name, std::string Mtl);
 	Group* GetGroup(std::string name);
 
 

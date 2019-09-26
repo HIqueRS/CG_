@@ -1,3 +1,4 @@
+#teste
 mtllib Grass_Block.mtl
 v 0.5 0.5 0.5
 v -0.5 0.5 0.5f
