@@ -47,10 +47,10 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 			rotationX += rotationSpeed;
 			break;
 		case GLFW_KEY_RIGHT:
-			rotationY += rotationSpeed;
+			rotationY -= rotationSpeed;
 			break;
 		case GLFW_KEY_LEFT:
-			rotationY -= rotationSpeed;
+			rotationY += rotationSpeed;
 			break;
 		}
 
@@ -89,105 +89,48 @@ int main() {
 	string line;
 	ifstream myfile("cubo.txt"); // ifstream = padrão ios:in
 	
+	string nameg;
+
 	while (!myfile.eof())
 	{
 		getline(myfile, line);
 
-		string nameg;
+		
 
 		stringstream sline;
 		sline << line;
 		string temp;
 
 		sline >> temp;
-		//cout << temp;
+		
 		if (temp == "v")
 		{
 			float x1, y1, z1;
 			sline >> x1 >> y1 >> z1;
-			//cout << x1 << y1 << z1;
+			
 			New_mesh.SetVertices(x1, y1, z1);
 		}
-		if (temp == "g")
+		else if (temp == "g")
 		{
-			
 			sline >> nameg; //nome grupo
-			//cout << nameg ; 
+			
 			New_mesh.CreateGroup(nameg);
-
-
-			
-			//getline(myfile, line);//proxima linha
-			//
-			//sline.clear();
-			//sline << line;
-			////string auxg;
-			//sline >> temp;
-			////cout << auxg;
-
-			//if (temp == "usemtl")
-			//{
-			//	string TempMtl;
-			//	sline >> TempMtl;
-			//	//cout << TempMtl;
-			//	New_mesh.SetMtlinGroup(nameg, TempMtl);
-
-			//	getline(myfile, line);//proxima linha
-			//	
-			//	sline.clear();
-			//	sline << line;
-			//	
-			//	sline >> temp;
-			//	cout << temp;
-			//}
-			//if (temp == "f")
-			//{
-			//	while (temp == "f")
-			//	{
-			//		cout << "aqui chegou";
-
-			//		int v1,v2,v3, t1, t2, t3, n1, n2, n3;
-
-			//		sline >> v1;//o primeiro é certo
-			//		
-			//		string auxF;
-			//		sline >> auxF;
-
-			//		if (auxF == "/")
-			//		{
-			//			sline >> auxF;
-			//			if (auxF != "/")
-			//			{
-
-			//			}
-			//		}
-			//		else 
-			//		{
-
-			//		}
-			//	}
-			//}
 		}
-		if (temp == "usemtl")
+		else if (temp == "usemtl")
 		{
-			//nameg = "group";
-			string TempMtl;
-			sline >> TempMtl;
-			cout << nameg; //<< " " <<TempMtl;
 			
+			string TempMtl;
+			sline >> TempMtl;			
 
-			//New_mesh.SetMtlinGroup(nameg, TempMtl);
-
-			//getline(myfile, line);//proxima linha
-
-			//sline.clear();
-			//sline << line;
-
-			//sline >> temp;
-			//cout << temp;
+			New_mesh.SetMtlinGroup(nameg, TempMtl); //é aqui que eu quero usar o nome do grupo dnv
 		}
-	
+		else if (temp == "f")
+		{
+			int id1, id2, id3;
 
+			sline >> id1 >> id2 >> id3;
+			New_mesh.CreateFaceinGroup(nameg, id1, id2, id3);
+		}
 	}
 	
 	
@@ -203,7 +146,7 @@ int main() {
 	New_mesh.SetVertices(-0.5f, -0.5f, -0.5f);
 	New_mesh.SetVertices(0.5f, -0.5f, -0.5f);*/
 
-	New_mesh.CreateGroup("xis");
+	/*New_mesh.CreateGroup("xis");
 	New_mesh.CreateFaceinGroup("xis", 0, 1, 2);
 	New_mesh.CreateFaceinGroup("xis", 2, 3, 0);
 	New_mesh.CreateFaceinGroup("xis", 4, 5, 6);
@@ -215,14 +158,14 @@ int main() {
 	New_mesh.CreateFaceinGroup("xis", 0, 3, 7);
 	New_mesh.CreateFaceinGroup("xis", 0, 4, 7);
 	New_mesh.CreateFaceinGroup("xis", 1, 2, 6);
-	New_mesh.CreateFaceinGroup("xis", 1, 5, 6);
+	New_mesh.CreateFaceinGroup("xis", 1, 5, 6);*/
 
 	//New_mesh.SetMtlinGroup("xis", "ue");
 
 
 	
 	Verts = New_mesh.GetVerts();
-	gp = New_mesh.GetGroup("xis");
+	gp = New_mesh.GetGroup("group");
 
 	int i = 0;
 	for (int f = 0; f < 12; f++)
