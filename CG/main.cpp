@@ -27,10 +27,6 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 	//std::cout << key << std::endl;
 
 	const GLfloat rotationSpeed = 10;
-	
-	
-	
-	
 
 	
 
@@ -107,6 +103,7 @@ int main() {
 		{
 			float x1, y1, z1;
 			sline >> x1 >> y1 >> z1;
+			cout << x1 << y1 << z1;
 			
 			New_mesh.SetVertices(x1, y1, z1);
 		}
@@ -129,43 +126,15 @@ int main() {
 			int id1, id2, id3;
 
 			sline >> id1 >> id2 >> id3;
+			
 			New_mesh.CreateFaceinGroup(nameg, id1, id2, id3);
 		}
 	}
 	
-	
-	
-
-	/*New_mesh.SetVertices(0.5f, 0.5f, 0.5f);
-	New_mesh.SetVertices(-0.5f, 0.5f, 0.5f);
-	New_mesh.SetVertices(-0.5f, 0.5f, -0.5f);
-	New_mesh.SetVertices(0.5f, 0.5f, -0.5f);
-	
-	New_mesh.SetVertices(0.5f, -0.5f, 0.5f);
-	New_mesh.SetVertices(-0.5f, -0.5f, 0.5f);
-	New_mesh.SetVertices(-0.5f, -0.5f, -0.5f);
-	New_mesh.SetVertices(0.5f, -0.5f, -0.5f);*/
-
-	/*New_mesh.CreateGroup("xis");
-	New_mesh.CreateFaceinGroup("xis", 0, 1, 2);
-	New_mesh.CreateFaceinGroup("xis", 2, 3, 0);
-	New_mesh.CreateFaceinGroup("xis", 4, 5, 6);
-	New_mesh.CreateFaceinGroup("xis", 6, 7, 4);
-	New_mesh.CreateFaceinGroup("xis", 0, 4, 5);
-	New_mesh.CreateFaceinGroup("xis", 5, 1, 0);
-	New_mesh.CreateFaceinGroup("xis", 2, 3, 6);
-	New_mesh.CreateFaceinGroup("xis", 3, 6, 7);
-	New_mesh.CreateFaceinGroup("xis", 0, 3, 7);
-	New_mesh.CreateFaceinGroup("xis", 0, 4, 7);
-	New_mesh.CreateFaceinGroup("xis", 1, 2, 6);
-	New_mesh.CreateFaceinGroup("xis", 1, 5, 6);*/
-
-	//New_mesh.SetMtlinGroup("xis", "ue");
-
-
-	
 	Verts = New_mesh.GetVerts();
 	gp = New_mesh.GetGroup("group");
+
+	cout <<"";
 
 	int i = 0;
 	for (int f = 0; f < 12; f++)
@@ -176,9 +145,9 @@ int main() {
 			points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->y;
 			points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->z;*/
 
-			points[i++] = Verts[gp->faces[f].Id_Vert[v]]->x;
-			points[i++] = Verts[gp->faces[f].Id_Vert[v]]->y;
-			points[i++] = Verts[gp->faces[f].Id_Vert[v]]->z;
+			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]]->x;
+			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]]->y;
+			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]]->z;
 		}
 	}
 
@@ -258,15 +227,17 @@ int main() {
 	GLuint vao, vao2;
 	GLuint vbo, vbo2;
 
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, 12*3*3* sizeof(GLfloat), points, GL_STATIC_DRAW);
+	New_mesh.Gps[0]->vbo;
+
+	glGenBuffers(1, &New_mesh.Gps[0]->vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, New_mesh.Gps[0]->vbo);
+	glBufferData(GL_ARRAY_BUFFER, New_mesh.Gps[0]->NFace *3*3* sizeof(GLfloat), points, GL_STATIC_DRAW);
 
 
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	glGenVertexArrays(1, &New_mesh.Gps[0]->vao);
+	glBindVertexArray(New_mesh.Gps[0]->vao);
 	glEnableVertexAttribArray(0); // habilitado primeiro atributo do vbo bound atual
-	glBindBuffer(GL_ARRAY_BUFFER, vbo); // identifica vbo atual
+	glBindBuffer(GL_ARRAY_BUFFER, New_mesh.Gps[0]->vbo); // identifica vbo atual
 	// associação do vbo atual com primeiro atributo
 	// 0 identifica que o primeiro atributo está sendo definido
 	// 3, GL_FLOAT identifica que dados são vec3 e estão a cada 3 float.
@@ -380,12 +351,8 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//		glUseProgram (shader_programme);
 
-		glBindVertexArray(vao);
+		glBindVertexArray(New_mesh.Gps[0]->vao);
 		/* draw points 0-3 from the currently bound VAO with current in-use shader*/
-
-		
-		
-
 		
 		glDrawArrays(GL_TRIANGLES, 0, 12*3);
 		

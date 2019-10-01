@@ -19,9 +19,16 @@ void Group::CreateFace(int V1, int V2, int V3)
 	faces[n].Id_Vert[1] = V2;
 	faces[n].Id_Vert[2] = V3;*/
 
-	faces[NFace].Add_Vert(V1);
+	Face Aux;
+	Aux.Add_Vert(V1);
+	Aux.Add_Vert(V2);
+	Aux.Add_Vert(V3);
+
+	Vec_Faces.push_back(Aux);
+
+	/*faces[NFace].Add_Vert(V1);
 	faces[NFace].Add_Vert(V2);
-	faces[NFace].Add_Vert(V3);
+	faces[NFace].Add_Vert(V3);*/
 	NFace++;
 }
 
