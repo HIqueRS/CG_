@@ -150,15 +150,32 @@ int main() {
 			sline >> aux >> aux1 >> aux2;
 
 			
+			if (aux[1] == NULL)
+			{
+				cout << "\n vertices \n";
+			}
+			else if (aux[1] == '/' && aux[3] == '/')
+			{
+				cout << "\n completo\n";
+			}
+			else if (aux[1] == '/' && aux[2] == '/') 
+			{
+				cout << "\n vertices e normais \n";
+			}
+			else if (aux[1] == '/' && aux[3] == NULL)
+			{
+				cout << "\n vertices e texturas \n";
+			}
+			
 			
 			//cout << " onde é q eu to " << aux << " ?\n ";
-			cout << "\n " << aux[0] << aux[1] << aux[2] << aux[3] << aux[4] <<" " ;
-			cout << " " << aux1[0] << aux1[1] << aux1[2] << aux[3] << aux1[4] << "\n";
+			//cout << "\n " << aux[0] << aux[1] << aux[2] << aux[3] << aux[4] <<" " ;
+			//cout << " " << aux1[0] << aux1[1] << aux1[2] << aux[3] << aux1[4] << "\n";
 			
-			int id1;
+			//int id1;
 			
-			id1 = (int)aux[0] - 48; 
-			cout << "\n id1 - " << id1 << " a\n ";
+			//id1 = (int)aux[0] - 48; 
+			//cout << "\n id1 - " << id1 << " a\n ";
 			//New_mesh.CreateFaceinGroup(nameg, aux[0], id2, id3);
 		}
 	}
