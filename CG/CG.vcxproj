@@ -138,6 +138,7 @@
     <ClInclude Include="ObjReader.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="cubo2.txt" />
     <Text Include="obj.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -11,6 +11,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "ObjReader.h"
+
 #include "Mesh.h"
 
 #define M_PI   3.14159265358979323846264338327950288
@@ -60,6 +62,8 @@ int main() {
 	GLFWwindow* window = NULL;
 	const GLubyte* renderer;
 	const GLubyte* version;
+
+	ObjReader Reader;
 
 	std::map<int,char> teste;
 
@@ -123,13 +127,27 @@ int main() {
 		}
 		else if (temp == "f")
 		{
-			int id1, id2, id3;
+			//int id1, id2, id3;
 
-			sline >> id1 >> id2 >> id3;
+			//sline >> id1 >> id2 >> id3;
+			//string bla1, bla2, bla3, bla4;
+			//sline >> bla1 >> bla2 >> bla3;// >> bla4;
+
+			//cout << bla1 << " " << bla2 << " " << bla3 << " acabou\n ";
+
+			string token;
+			//sline >> token; // v/t/n, por exemplo
+			stringstream stoken;
+			string aux;
+			getline(sline, aux, '/');
+
+			cout << " onde é q eu to " << aux << " ?\n ";
 			
-			New_mesh.CreateFaceinGroup(nameg, id1, id2, id3);
+			//New_mesh.CreateFaceinGroup(nameg, id1, id2, id3);
 		}
 	}
+
+	New_mesh = Reader.Read("cubo.txt");
 	
 	Verts = New_mesh.GetVerts();
 	gp = New_mesh.GetGroup("group");

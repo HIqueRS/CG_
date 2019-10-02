@@ -49,5 +49,8 @@
     <Text Include="obj.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="cubo2.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
