@@ -24,3 +24,17 @@ void Face::Add_Vert(int id)
 
 	
 }
+
+void Face::Add_Text(int id)
+{
+
+	Id_Text[Actual_Text] = id;
+	Actual_Text++;
+}
+
+void Face::Add_Normal(int id)
+{
+
+	Id_Normal[Actual_Normal] = id;
+	Actual_Normal++;
+}

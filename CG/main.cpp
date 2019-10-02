@@ -82,7 +82,7 @@ int main() {
 
 
 
-	GLfloat points[108];
+	GLfloat* points;
 	std::vector<glm::vec3*> Verts;
 	Group *gp;
 
@@ -154,7 +154,12 @@ int main() {
 			//cout << " onde é q eu to " << aux << " ?\n ";
 			cout << "\n " << aux[0] << aux[1] << aux[2] << aux[3] << aux[4] <<" " ;
 			cout << " " << aux1[0] << aux1[1] << aux1[2] << aux[3] << aux1[4] << "\n";
-			//New_mesh.CreateFaceinGroup(nameg, id1, id2, id3);
+			
+			int id1;
+			
+			id1 = (int)aux[0] - 48; 
+			cout << "\n id1 - " << id1 << " a\n ";
+			//New_mesh.CreateFaceinGroup(nameg, aux[0], id2, id3);
 		}
 	}
 
@@ -163,10 +168,10 @@ int main() {
 	Verts = New_mesh.GetVerts();
 	gp = New_mesh.GetGroup("group");
 
-	cout <<"";
+	points = new GLfloat[New_mesh.Gps[0]->NFace * 9];
 
 	int i = 0;
-	for (int f = 0; f < 12; f++)
+	for (int f = 0; f < New_mesh.Gps[0]->NFace; f++)
 	{
 		for (int v = 0; v < 3; v++)
 		{
