@@ -87,7 +87,7 @@ int main() {
 	Group *gp;
 
 	string line;
-	ifstream myfile("cubo.txt"); // ifstream = padrão ios:in
+	ifstream myfile("cubo2.txt"); // ifstream = padrão ios:in
 	
 	string nameg;
 
@@ -138,11 +138,22 @@ int main() {
 			string token;
 			//sline >> token; // v/t/n, por exemplo
 			stringstream stoken;
-			string aux;
-			getline(sline, aux, '/');
+			string aux,aux1,aux2;
+			//getline(sline, aux, '/');
+			//getline(sline, aux1, '/');
+			//getline(sline, aux2, ' ');
 
-			cout << " onde é q eu to " << aux << " ?\n ";
+			//sline[0] >> aux;
+
+			//sline.seekg(0, std::ios_base::cur) >> aux;
+
+			sline >> aux >> aux1 >> aux2;
+
 			
+			
+			//cout << " onde é q eu to " << aux << " ?\n ";
+			cout << "\n " << aux[0] << aux[1] << aux[2] << aux[3] << aux[4] <<" " ;
+			cout << " " << aux1[0] << aux1[1] << aux1[2] << aux[3] << aux1[4] << "\n";
 			//New_mesh.CreateFaceinGroup(nameg, id1, id2, id3);
 		}
 	}
