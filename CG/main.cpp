@@ -65,16 +65,15 @@ int main() {
 
 	ObjReader Reader;
 
-	std::map<int,char> teste;
-
-	teste[1]= 'c';
-
-	std::cout << teste.find(1)->second << std::endl;
+	
 
 	/* geometry to use. these are 3 xyz points (9 floats total) to make a triangle
 	*/
 
-	Mesh New_mesh;
+	Mesh *New_mesh;
+	int nMesh = 2;
+
+	New_mesh = new Mesh[nMesh];
 
 	typedef struct Vertex {
 		GLfloat coords[3];
@@ -85,110 +84,25 @@ int main() {
 	GLfloat* points;
 	std::vector<glm::vec3*> Verts;
 	Group *gp;
-
-	string line;
-	ifstream myfile("cubo2.txt"); // ifstream = padrão ios:in
 	
-	string nameg;
 
-	while (!myfile.eof())
+	
+	/*for (int i = 0; i < nMesh; i++)
 	{
-		getline(myfile, line);
 
-		
+	}*/
+	New_mesh[0] = Reader.Read("mesa01.obj");
 
-		stringstream sline;
-		sline << line;
-		string temp;
-
-		sline >> temp;
-		
-		if (temp == "v")
-		{
-			float x1, y1, z1;
-			sline >> x1 >> y1 >> z1;
-			cout << x1 << y1 << z1;
-			
-			New_mesh.SetVertices(x1, y1, z1);
-		}
-		else if (temp == "g")
-		{
-			sline >> nameg; //nome grupo
-			
-			New_mesh.CreateGroup(nameg);
-		}
-		else if (temp == "usemtl")
-		{
-			
-			string TempMtl;
-			sline >> TempMtl;			
-
-			New_mesh.SetMtlinGroup(nameg, TempMtl); //é aqui que eu quero usar o nome do grupo dnv
-		}
-		else if (temp == "f")
-		{
-			//int id1, id2, id3;
-
-			//sline >> id1 >> id2 >> id3;
-			//string bla1, bla2, bla3, bla4;
-			//sline >> bla1 >> bla2 >> bla3;// >> bla4;
-
-			//cout << bla1 << " " << bla2 << " " << bla3 << " acabou\n ";
-
-			string token;
-			//sline >> token; // v/t/n, por exemplo
-			stringstream stoken;
-			string aux,aux1,aux2;
-			//getline(sline, aux, '/');
-			//getline(sline, aux1, '/');
-			//getline(sline, aux2, ' ');
-
-			//sline[0] >> aux;
-
-			//sline.seekg(0, std::ios_base::cur) >> aux;
-
-			sline >> aux >> aux1 >> aux2;
-
-			
-			if (aux[1] == NULL)
-			{
-				cout << "\n vertices \n";
-			}
-			else if (aux[1] == '/' && aux[3] == '/')
-			{
-				cout << "\n completo\n";
-			}
-			else if (aux[1] == '/' && aux[2] == '/') 
-			{
-				cout << "\n vertices e normais \n";
-			}
-			else if (aux[1] == '/' && aux[3] == NULL)
-			{
-				cout << "\n vertices e texturas \n";
-			}
-			
-			
-			//cout << " onde é q eu to " << aux << " ?\n ";
-			//cout << "\n " << aux[0] << aux[1] << aux[2] << aux[3] << aux[4] <<" " ;
-			//cout << " " << aux1[0] << aux1[1] << aux1[2] << aux[3] << aux1[4] << "\n";
-			
-			//int id1;
-			
-			//id1 = (int)aux[0] - 48; 
-			//cout << "\n id1 - " << id1 << " a\n ";
-			//New_mesh.CreateFaceinGroup(nameg, aux[0], id2, id3);
-		}
-	}
-
-	New_mesh = Reader.Read("cubo.txt");
 	
-	Verts = New_mesh.GetVerts();
-	gp = New_mesh.GetGroup("group");
+	Verts = New_mesh[0].GetVerts();
+	gp = New_mesh[0].Gps[0];//isso tem q mudar
 
-	points = new GLfloat[New_mesh.Gps[0]->NFace * 9];
+	points = new GLfloat[New_mesh[0].Gps[0]->NFace * 9];//isso tem q ter um for de grupo
+
+	cout << New_mesh[0].Gps[0]->NFace;
 
 	int i = 0;
-	for (int f = 0; f < New_mesh.Gps[0]->NFace; f++)
+	for (int f = 0; f < New_mesh[0].Gps[0]->NFace; f++)
 	{
 		for (int v = 0; v < 3; v++)
 		{
@@ -196,11 +110,15 @@ int main() {
 			points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->y;
 			points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->z;*/
 
-			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]]->x;
-			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]]->y;
-			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]]->z;
+			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]-1]->x;//isso aqui tem q ta em um for de grupo
+			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]-1]->y;//for
+			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]-1]->z;//de grupo
+			
+			cout << i << endl;
 		}
 	}
+
+	
 
 	GLfloat colors[] = {
 	  1.0f, 0.0f, 0.0f,
@@ -278,17 +196,17 @@ int main() {
 	GLuint vao, vao2;
 	GLuint vbo, vbo2;
 
-	New_mesh.Gps[0]->vbo;
+	New_mesh[0].Gps[0]->vbo;//for de grupo
 
-	glGenBuffers(1, &New_mesh.Gps[0]->vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, New_mesh.Gps[0]->vbo);
-	glBufferData(GL_ARRAY_BUFFER, New_mesh.Gps[0]->NFace *3*3* sizeof(GLfloat), points, GL_STATIC_DRAW);
+	glGenBuffers(1, &New_mesh[0].Gps[0]->vbo);//for de grupo
+	glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->vbo);
+	glBufferData(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->NFace *3*3* sizeof(GLfloat), points, GL_STATIC_DRAW);
 
 
-	glGenVertexArrays(1, &New_mesh.Gps[0]->vao);
-	glBindVertexArray(New_mesh.Gps[0]->vao);
+	glGenVertexArrays(1, &New_mesh[0].Gps[0]->vao);
+	glBindVertexArray(New_mesh[0].Gps[0]->vao);
 	glEnableVertexAttribArray(0); // habilitado primeiro atributo do vbo bound atual
-	glBindBuffer(GL_ARRAY_BUFFER, New_mesh.Gps[0]->vbo); // identifica vbo atual
+	glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->vbo); // identifica vbo atual
 	// associação do vbo atual com primeiro atributo
 	// 0 identifica que o primeiro atributo está sendo definido
 	// 3, GL_FLOAT identifica que dados são vec3 e estão a cada 3 float.
@@ -353,7 +271,7 @@ int main() {
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 
-
+	
 
 	while (!glfwWindowShouldClose(window)) {
 
@@ -389,8 +307,15 @@ int main() {
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotationY), glm::vec3(0.f, 1.f, 0.f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
 		//ModelMatrix = glm::perspective(glm::radians(45.0f), (float)640 / (float)480, 0.1f, 100.0f);
-		//ModelMatrix = glm::scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.f, 0.f, -0.001f));
+		
+
+		if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_SPACE)) {
+
+			
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.f, 0.f, -0.001f));
+			
+		}
+
 		
 		rotationX = 0;
 		rotationY = 0;
@@ -402,10 +327,10 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//		glUseProgram (shader_programme);
 
-		glBindVertexArray(New_mesh.Gps[0]->vao);
+		glBindVertexArray(New_mesh[0].Gps[0]->vao);
 		/* draw points 0-3 from the currently bound VAO with current in-use shader*/
 		
-		glDrawArrays(GL_TRIANGLES, 0, 12*3);
+		glDrawArrays(GL_TRIANGLES, 0, New_mesh[0].Gps[0]->NFace*3);
 		
 
 		/* update other events like input handling */
