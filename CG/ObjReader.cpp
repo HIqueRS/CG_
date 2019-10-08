@@ -88,9 +88,7 @@ Mesh ObjReader::Read(std::string name)
 			string aux, aux1, aux2,token;
 			stringstream stoken;
 
-			//sline >> aux >> aux1 >> aux2;
-
-			//cout << aux << aux1 << aux2 << endl;
+			
 
 			sline >> token;
 			
@@ -100,11 +98,11 @@ Mesh ObjReader::Read(std::string name)
 
 			
 
-			//cout <<" "<<aux << " aa\n ";
+			
 
 			for (int i = 0; i < token.length(); i++)
 			{
-				//cout << token[i];
+				
 				if (token[i] == '/')
 				{
 					auxBar++;
@@ -120,14 +118,87 @@ Mesh ObjReader::Read(std::string name)
 			if (auxBar == 0)
 			{
 				//caso só vertice
+				cout << "Só vertice";
+
+				stoken << token;
+				getline(stoken, aux, ' ');
+				v1 = stoi(aux);				
+
+				stoken.clear();
+
+				sline >> token;
+				stoken << token;
+				getline(stoken, aux, ' ');
+				v2 = stoi(aux);				
+
+				stoken.clear();
+
+				sline >> token;
+				stoken << token;
+				getline(stoken, aux, ' ');
+				v3 = stoi(aux);
+				
 			}
 			else if (Tb)
 			{
 				//vertice e normal
+				cout << "Vertice e normal";
+
+				stoken << token;
+				getline(stoken, aux, '/');
+				v1 = stoi(aux);				
+				getline(stoken, aux, '/');							
+				getline(stoken, aux, ' ');				
+				n1 = stoi(aux);
+
+				stoken.clear();
+
+				sline >> token;
+				stoken << token;
+				getline(stoken, aux, '/');
+				v2 = stoi(aux);				
+				getline(stoken, aux, '/');							
+				getline(stoken, aux, ' ');
+				n2 = stoi(aux);				
+
+				stoken.clear();
+
+				sline >> token;
+				stoken << token;
+				getline(stoken, aux, '/');
+				v3 = stoi(aux);
+				getline(stoken, aux, '/');				
+				getline(stoken, aux, ' ');
+				n3 = stoi(aux);
 			}
 			else if (auxBar == 1)
 			{
 				//vertice e textura
+				cout << "Vertice e textura";
+				stoken << token;
+				getline(stoken, aux, '/');
+				v1 = stoi(aux);				
+				getline(stoken, aux, ' ');
+				t1 = stoi(aux);							
+
+				stoken.clear();
+
+				sline >> token;
+				stoken << token;
+				getline(stoken, aux, '/');
+				v2 = stoi(aux);				
+				getline(stoken, aux, ' ');
+				t2 = stoi(aux);				
+
+				stoken.clear();
+
+				sline >> token;
+				stoken << token;
+				getline(stoken, aux, '/');
+				v3 = stoi(aux);
+				getline(stoken, aux, ' ');
+				t3 = stoi(aux);
+				
 			}
 			else if (auxBar == 2)
 			{

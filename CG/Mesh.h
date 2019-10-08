@@ -34,7 +34,7 @@ public:
 
 	int NGps;
 	std::map<std::string, int > Nomes;
-
+	int TFa;
 	float scale;
 
 

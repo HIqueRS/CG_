@@ -6,7 +6,7 @@ Mesh::Mesh()
 {
 	BoxEx();
 	NGps = 0;
-
+	TFa = 0;
 }
 
 
@@ -72,6 +72,7 @@ void Mesh::CreateFaceinGroup(std::string name, int v1, int t1, int n1, int v2, i
 {
 	//Gps[];
 	Gps[Nomes.find(name)->second]->CreateFace(v1, v2, v3);
+	TFa++;
 }
 
 void Mesh::SetMtlinGroup(std::string name, std::string Mtl)

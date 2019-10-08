@@ -33,6 +33,8 @@ public:
 	std::string Mtl;
 
 	GLuint vao;
-	GLuint vbo;
+	GLuint vboV;
+	GLuint vboT;
+	GLuint vboN;
 };
 
