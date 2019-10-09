@@ -207,13 +207,13 @@ Mesh ObjReader::Read(std::string name)
 				stoken << token;
 				getline(stoken, aux, '/');
 				v1 = stoi(aux); 
-				cout << v1 << "/";
+				//cout << v1 << "/";
 				getline(stoken, aux, '/');
 				t1 = stoi(aux);
-				cout << t1 << "/";
+				//cout << t1 << "/";
 				getline(stoken, aux, ' ');
 				n1 = stoi(aux);
-				cout << n1 << " ";
+				//cout << n1 << " ";
 
 				stoken.clear();
 
@@ -221,13 +221,13 @@ Mesh ObjReader::Read(std::string name)
 				stoken << token;
 				getline(stoken, aux, '/');
 				v2 = stoi(aux);
-				cout << v2 << "/";
+				//cout << v2 << "/";
 				getline(stoken, aux, '/');
 				t2 = stoi(aux);
-				cout << t2 << "/";
+				//cout << t2 << "/";
 				getline(stoken, aux, ' ');
 				n2 = stoi(aux);
-				cout << n2 << "\n";
+				//cout << n2 << "\n";
 
 				stoken.clear();
 
@@ -240,9 +240,30 @@ Mesh ObjReader::Read(std::string name)
 				getline(stoken, aux, ' ');
 				n3 = stoi(aux);
 
+				stoken.clear();
+
+				string naux,ntoken;
+				stringstream nstoken;
+
+				sline >> ntoken;
+				nstoken << ntoken;
+				getline(nstoken, naux, '/');
+				//cout <<" a "<<naux << " a ";
+				if (naux != "")
+				{
+					v4 = stoi(naux);
+					getline(nstoken, naux, '/');
+					t4 = stoi(naux);
+					getline(nstoken, naux, ' ');
+					n4 = stoi(naux);
+
+					New_mesh.CreateFaceinGroup(nameg, v1, t1, n1, v3, t3, n3, v4, t4, n4);
+				}
+				
+
 			}
 			
-			New_mesh.CreateFaceinGroup(nameg, v1, 1, 1, v2, 1, 1, v3, 1, 1);
+			New_mesh.CreateFaceinGroup(nameg, v1, t1, n1, v2, t2, n2, v3, t3, n3);
 		}
 
 		//cout << endl;

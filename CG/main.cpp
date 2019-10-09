@@ -104,7 +104,7 @@ void CameraMovement(GLFWwindow * window, glm::mat4 &view)
 		//
 		//eye = glm::vec3(camX, eye.y, camZ);
 		////Cam_rotx -= 0.01;
-		eye -= glm::normalize(glm::cross(camF, up)) * 0.01f;
+		//eye -= glm::normalize(glm::cross(camF, up)) * 0.01f;
 	}
 	if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_RIGHT)) {
 
@@ -113,7 +113,7 @@ void CameraMovement(GLFWwindow * window, glm::mat4 &view)
 		camX = sin(Cam_rotx)*radius;
 		camZ = cos(Cam_rotx) *radius;*/
 		//Cam_rotx += 0.01;
-		eye += glm::normalize(glm::cross(camF, up)) * 0.01f;
+		//eye += glm::normalize(glm::cross(camF, up)) * 0.01f;
 	}
 
 	
@@ -163,14 +163,14 @@ void IniciateMesh(Mesh &m) {
 			for (int v = 0; v < 3; v++)
 			{
 				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->x;
-				cout << points[c] << "e agr?\n ";
+				//cout << points[c] << "e agr?\n ";
 				c++;
 
 				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->y;
-				cout << points[c] << "e agr?\n ";
+				//cout << points[c] << "e agr?\n ";
 				c++;
 				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->z;
-				cout << points[c] << "e agr?\n ";
+				//cout << points[c] << "e agr?\n ";
 				c++;
 
 			}
@@ -224,7 +224,7 @@ int main() {
 
 	}*/
 	New_mesh[0] = Reader.Read("cubo2.txt");
-	//New_mesh[1] = Reader.Read("Cubo3.txt");
+	//New_mesh[1] = Reader.Read("Cubo3.txt");//LibertStatue.obj
 	//New_mesh[0] = IniciateMesh(New_mesh[0]);
 
 
@@ -422,7 +422,7 @@ int main() {
 		}
 
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotationX), glm::vec3(1.f, 0.f, 0.f));
-		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotationY), glm::vec3(0.f, 1.f, 0.f));
+		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotationY), glm::vec3(0.f, 1.f, 0.f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
 		//ModelMatrix = glm::perspective(glm::radians(45.0f), (float)640 / (float)480, 0.1f, 100.0f);
 		
@@ -430,7 +430,7 @@ int main() {
 		if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_SPACE)) {
 
 			
-			//ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.f, 0.f, -0.001f));
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.f, 0.f, -0.001f));
 			
 		}
 
