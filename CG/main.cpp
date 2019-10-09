@@ -57,41 +57,64 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 }
 
 void IniciateMesh(Mesh &m) {
-	//recebe a mesh manda ela ler do arquivo 
-	//inicia o vao pra cada grupo
-	//e depois um vbo pra cada vs dentro dos grupos
-	//e associa esses vao e vbo pra dentro dos grupos
-
-	int ngroup;
 	
+	int ngroup;
+
 
 	ngroup = m.NGps;
 
-	for (int i = 0; 9 < ngroup; i++)
+	for (int i = 0; i < ngroup; i++)
 	{
 		int nfaces;
 		nfaces = m.Gps[i]->NFace;
 		GLfloat* points;
 		points = new GLfloat[nfaces*9];
 
+		std::vector<glm::vec3*> Verts;
+		Group *gp;
+
+		Verts = m.GetVerts();
+		gp = m.Gps[i];
+
+		
+
 		int c = 0;
 
+		glGenVertexArrays(1, &m.Gps[i]->vao);
+		glBindVertexArray(m.Gps[i]->vao);
+
+
+		cout << "q?";
 		for (int f = 0; f < nfaces; f++)
 		{
 			for (int v = 0; v < 3; v++)
 			{
-				points[c++] = m.Verts[m.Gps[i]->Vec_Faces[f].Id_Text[v] - 1]->x;
-				points[c++] = m.Verts[m.Gps[i]->Vec_Faces[f].Id_Text[v] - 1]->y;
-				points[c++] = m.Verts[m.Gps[i]->Vec_Faces[f].Id_Text[v] - 1]->z;				
-					//points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->x;//isso aqui tem q ta em um for de grupo
-					//points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->y;//for
-					//points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->z;
+				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->x;
+				cout << points[c] << "e agr?\n ";
+				c++;
+
+				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->y;
+				cout << points[c] << "e agr?\n ";
+				c++;
+				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->z;
+				cout << points[c] << "e agr?\n ";
+				c++;
+
 			}
-			
+
 		}
+
+
+		glGenBuffers(1, &m.Gps[i]->vboV);
+		glBindBuffer(GL_ARRAY_BUFFER, m.Gps[i]->vboV);
+		glBufferData(GL_ARRAY_BUFFER, m.Gps[i]->NFace * 3 * 3 * sizeof(GLfloat), points, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, m.Gps[i]->vboV);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
 	}
 
+	
 }
 
 int main() {
@@ -127,32 +150,13 @@ int main() {
 	{
 
 	}*/
-	New_mesh[0] = Reader.Read("cubo2.txt");
+	New_mesh[0] = Reader.Read("Cubo2.txt");
+	New_mesh[1] = Reader.Read("Cubo3.txt");
+	//New_mesh[0] = IniciateMesh(New_mesh[0]);
+
 
 	
-	Verts = New_mesh[0].GetVerts();
-	gp = New_mesh[0].Gps[0];//isso tem q mudar
-
-	points = new GLfloat[New_mesh[0].Gps[0]->NFace * 9];//isso tem q ter um for de grupo
-
-	cout << New_mesh[0].Gps[0]->NFace;
-
-	int i = 0;
-	for (int f = 0; f < New_mesh[0].Gps[0]->NFace; f++)
-	{
-		for (int v = 0; v < 3; v++)
-		{
-			/*points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->x;
-			points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->y;
-			points[i++] = Verts[New_mesh.g.faces[f].Id_Vert[v]]->z;*/
-
-			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]-1]->x;//isso aqui tem q ta em um for de grupo
-			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]-1]->y;//for
-			points[i++] = Verts[gp->Vec_Faces[f].Id_Vert[v]-1]->z;//de grupo
-			
-			cout << i << endl;
-		}
-	}
+	
 
 	
 
@@ -232,21 +236,21 @@ int main() {
 	GLuint vao, vao2;
 	GLuint vbo, vbo2;
 
-	New_mesh[0].Gps[0]->vboV;//for de grupo
+	//New_mesh[0].Gps[0]->vboV;//for de grupo
 
-	glGenBuffers(1, &New_mesh[0].Gps[0]->vboV);//for de grupo
-	glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->vboV);
-	glBufferData(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->NFace *3*3* sizeof(GLfloat), points, GL_STATIC_DRAW);
+	//glGenBuffers(1, &New_mesh[0].Gps[0]->vboV);//for de grupo
+	//glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->vboV);
+	//glBufferData(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->NFace *3*3* sizeof(GLfloat), points, GL_STATIC_DRAW);
 
 
-	glGenVertexArrays(1, &New_mesh[0].Gps[0]->vao);
-	glBindVertexArray(New_mesh[0].Gps[0]->vao);
-	glEnableVertexAttribArray(0); // habilitado primeiro atributo do vbo bound atual
-	glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->vboV); // identifica vbo atual
-	// associação do vbo atual com primeiro atributo
-	// 0 identifica que o primeiro atributo está sendo definido
-	// 3, GL_FLOAT identifica que dados são vec3 e estão a cada 3 float.
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	//glGenVertexArrays(1, &New_mesh[0].Gps[0]->vao);
+	//glBindVertexArray(New_mesh[0].Gps[0]->vao);
+	//glEnableVertexAttribArray(0); // habilitado primeiro atributo do vbo bound atual
+	//glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->vboV); // identifica vbo atual
+	//// associação do vbo atual com primeiro atributo
+	//// 0 identifica que o primeiro atributo está sendo definido
+	//// 3, GL_FLOAT identifica que dados são vec3 e estão a cada 3 float.
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
 	//GLuint vbo = 0;
 	//
@@ -258,6 +262,71 @@ int main() {
 	//glBindBuffer(GL_ARRAY_BUFFER, vbo);// identifica vbo atual // habilitado primeiro atributo do vbo bound atual
 	//glEnableVertexAttribArray(0); // associação do vbo atual com primeiro atributo // 0 identifica que o primeiro atributo está sendo definido // 3, GL_FLOAT identifica que dados são vec3 e estão a cada 3 float. 
 	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+	for (int i = 0; i < nMesh; i++)
+	{
+		IniciateMesh(New_mesh[i]);
+	}
+	
+
+	/*int ngroup;
+
+
+	ngroup = New_mesh[0].NGps;
+
+	for (int i = 0; i < ngroup; i++)
+	{
+		int nfaces;
+		nfaces = New_mesh[0].Gps[i]->NFace;
+		GLfloat* points;
+		points = new GLfloat[108];
+
+		Verts = New_mesh[0].GetVerts();
+		gp = New_mesh[0].Gps[i];
+
+		points[0] = 1;
+		cout << points[0] << endl;
+
+		points[107] = 108;
+		cout << points[107] << endl;
+
+		int c = 0;
+
+		glGenVertexArrays(1, &New_mesh[0].Gps[i]->vao);
+		glBindVertexArray(New_mesh[0].Gps[i]->vao);
+
+
+		cout << "q?";
+		for (int f = 0; f < nfaces; f++)
+		{
+			for (int v = 0; v < 3; v++)
+			{
+				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->x;
+				cout << points[c] << "e agr?\n ";
+				c++;
+				
+				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->y;
+				cout << points[c] << "e agr?\n ";
+				c++;
+				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->z;
+				cout << points[c] << "e agr?\n ";
+				c++;
+
+			}
+
+		}
+
+
+		glGenBuffers(1, &New_mesh[0].Gps[i]->vboV);
+		glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[i]->vboV);
+		glBufferData(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->NFace * 3 * 3 * sizeof(GLfloat), points, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[i]->vboV);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+	}*/
+
+
 
 	// é possível associar outros atributos, como normais, mapeamento e cores
 	// lembre-se: um por vértice!
@@ -374,10 +443,19 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//		glUseProgram (shader_programme);
 
-		glBindVertexArray(New_mesh[0].Gps[0]->vao);
+		for (int i = 0; i < nMesh; i++) 
+		{
+			for (int g = 0; g < New_mesh[i].NGps; g++)
+			{
+				glBindVertexArray(New_mesh[i].Gps[g]->vao);
+				glDrawArrays(GL_TRIANGLES, 0, New_mesh[i].Gps[g]->NFace * 3);
+			}
+		}
+		
+		
 		/* draw points 0-3 from the currently bound VAO with current in-use shader*/
 		
-		glDrawArrays(GL_TRIANGLES, 0, New_mesh[0].Gps[0]->NFace*3);
+		
 		
 
 		/* update other events like input handling */
