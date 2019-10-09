@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <time.h>
 
 #include "ObjReader.h"
 
@@ -21,6 +22,21 @@
 
 GLfloat rotationX = 0.0f;
 GLfloat rotationY = 0.0f;
+
+GLfloat  Cam_rotx = 0.0f;
+GLfloat Cam_PosZ = 3.0f;
+
+glm::vec3  center = glm::vec3(0.0f, 0.0f, 0.0f) , up = glm::vec3(0.0f, 1.0f, 0.0f) , camF = glm::vec3(0.0f, 0.0f, -1.0f);
+float camX = sin(glfwGetTime()) * 10;
+float camZ = cos(glfwGetTime()) * 10;
+
+glm::vec3 eye = glm::vec3(camX, 0.0, camZ);
+
+
+
+
+
+
 
 using namespace std;
 
@@ -54,6 +70,63 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
 
 
 	}
+}
+
+void CameraMovement(GLFWwindow * window, glm::mat4 &view)
+{
+	float radius = 10.0f;
+	
+
+
+	
+	
+	
+
+	if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_UP)) {
+
+		//Cam_PosZ -= 0.01;
+		eye += 0.01f * camF;
+	}
+	if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_DOWN)) {
+
+
+		//Cam_PosZ += 0.01;
+		eye -= 0.01f * camF;
+
+	}
+	if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_LEFT)) {
+
+		//Cam_rotx -= 0.01f;
+		//
+		//camX = sin(eye.x + Cam_rotx)*radius ;
+		//camZ = cos(eye.z + Cam_rotx) *radius ;
+
+		//
+		//eye = glm::vec3(camX, eye.y, camZ);
+		////Cam_rotx -= 0.01;
+		eye -= glm::normalize(glm::cross(camF, up)) * 0.01f;
+	}
+	if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_RIGHT)) {
+
+		/*Cam_rotx += 0.01;
+
+		camX = sin(Cam_rotx)*radius;
+		camZ = cos(Cam_rotx) *radius;*/
+		//Cam_rotx += 0.01;
+		eye += glm::normalize(glm::cross(camF, up)) * 0.01f;
+	}
+
+	
+	view = glm::lookAt(eye, center, up);
+
+
+	/*float radius = 10.0f;
+	float camX = sin(glfwGetTime()) * radius;
+	float camZ = cos(glfwGetTime()) * radius;
+	glm::mat4 view;
+	view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));*/
+
+	
 }
 
 void IniciateMesh(Mesh &m) {
@@ -130,7 +203,7 @@ int main() {
 	*/
 
 	Mesh *New_mesh;
-	int nMesh = 2;
+	int nMesh = 1;
 
 	New_mesh = new Mesh[nMesh];
 
@@ -150,8 +223,8 @@ int main() {
 	{
 
 	}*/
-	New_mesh[0] = Reader.Read("Cubo2.txt");
-	New_mesh[1] = Reader.Read("Cubo3.txt");
+	New_mesh[0] = Reader.Read("cubo2.txt");
+	//New_mesh[1] = Reader.Read("Cubo3.txt");
 	//New_mesh[0] = IniciateMesh(New_mesh[0]);
 
 
@@ -175,10 +248,11 @@ int main() {
 		"layout(location=1) in vec3 vc;"
 		"uniform mat4 matrix;"
 		"uniform mat4 proj;"
+		"uniform mat4 view;"
 		"out vec3 color;"
 		"void main () {"
 		"   color = vc;"
-		"	gl_Position = proj * matrix * vec4 (vp, 1.0);"
+		"	gl_Position = proj * view * matrix * vec4 (vp, 1.0);"
 		"}";
 	// proj *
 
@@ -233,35 +307,7 @@ int main() {
 
 	/* a vertex buffer object (VBO) is created here. this stores an array of data
 	on the graphics adapter's memory. in our case - the vertex points */
-	GLuint vao, vao2;
-	GLuint vbo, vbo2;
-
-	//New_mesh[0].Gps[0]->vboV;//for de grupo
-
-	//glGenBuffers(1, &New_mesh[0].Gps[0]->vboV);//for de grupo
-	//glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->vboV);
-	//glBufferData(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->NFace *3*3* sizeof(GLfloat), points, GL_STATIC_DRAW);
-
-
-	//glGenVertexArrays(1, &New_mesh[0].Gps[0]->vao);
-	//glBindVertexArray(New_mesh[0].Gps[0]->vao);
-	//glEnableVertexAttribArray(0); // habilitado primeiro atributo do vbo bound atual
-	//glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->vboV); // identifica vbo atual
-	//// associação do vbo atual com primeiro atributo
-	//// 0 identifica que o primeiro atributo está sendo definido
-	//// 3, GL_FLOAT identifica que dados são vec3 e estão a cada 3 float.
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-	//GLuint vbo = 0;
-	//
-	//glGenVertexArrays(1, &vao);
-	//glBindVertexArray(vao);
-	//glGenBuffers(1, &vbo);
-	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, vbo);// identifica vbo atual // habilitado primeiro atributo do vbo bound atual
-	//glEnableVertexAttribArray(0); // associação do vbo atual com primeiro atributo // 0 identifica que o primeiro atributo está sendo definido // 3, GL_FLOAT identifica que dados são vec3 e estão a cada 3 float. 
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	
 
 	for (int i = 0; i < nMesh; i++)
 	{
@@ -269,62 +315,7 @@ int main() {
 	}
 	
 
-	/*int ngroup;
-
-
-	ngroup = New_mesh[0].NGps;
-
-	for (int i = 0; i < ngroup; i++)
-	{
-		int nfaces;
-		nfaces = New_mesh[0].Gps[i]->NFace;
-		GLfloat* points;
-		points = new GLfloat[108];
-
-		Verts = New_mesh[0].GetVerts();
-		gp = New_mesh[0].Gps[i];
-
-		points[0] = 1;
-		cout << points[0] << endl;
-
-		points[107] = 108;
-		cout << points[107] << endl;
-
-		int c = 0;
-
-		glGenVertexArrays(1, &New_mesh[0].Gps[i]->vao);
-		glBindVertexArray(New_mesh[0].Gps[i]->vao);
-
-
-		cout << "q?";
-		for (int f = 0; f < nfaces; f++)
-		{
-			for (int v = 0; v < 3; v++)
-			{
-				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->x;
-				cout << points[c] << "e agr?\n ";
-				c++;
-				
-				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->y;
-				cout << points[c] << "e agr?\n ";
-				c++;
-				points[c] = Verts[gp->Vec_Faces[f].Id_Vert[v] - 1]->z;
-				cout << points[c] << "e agr?\n ";
-				c++;
-
-			}
-
-		}
-
-
-		glGenBuffers(1, &New_mesh[0].Gps[i]->vboV);
-		glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[i]->vboV);
-		glBufferData(GL_ARRAY_BUFFER, New_mesh[0].Gps[0]->NFace * 3 * 3 * sizeof(GLfloat), points, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, New_mesh[0].Gps[i]->vboV);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-	}*/
+	
 
 
 
@@ -358,6 +349,7 @@ int main() {
 
 	int matrixLocation = glGetUniformLocation(shader_programme, "matrix");
 	int matrixLocation_1 = glGetUniformLocation(shader_programme, "proj");
+	int matrixLocation_View = glGetUniformLocation(shader_programme, "view");
 	//glUseProgram (shader_programme);
 	//glUniformMatrix4fv(matrixLocation, 1, GL_FALSE, matrix);
 
@@ -377,8 +369,16 @@ int main() {
 	std::cout << "sin de 90: " << sin(b) << std::endl;
 
 	glm::mat4 ModelMatrix(1.f),Proj;
+	glm::mat4 view;
 	
 
+
+
+
+
+	CameraMovement(window,view);
+
+	view = glm::lookAt(eye, center, up);
 
 	float speed = 1.0f;
 	float lastPosition = 0.0f;
@@ -388,7 +388,9 @@ int main() {
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 
 	
+	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.f, 0.f, 0.0f));
 
+	
 	while (!glfwWindowShouldClose(window)) {
 
 		static double previousSeconds = glfwGetTime();
@@ -419,8 +421,8 @@ int main() {
 			//aula 3 0.5 -0.5, 0.5  
 		}
 
-		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotationX), glm::vec3(1.f, 0.f, 0.f));
-		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotationY), glm::vec3(0.f, 1.f, 0.f));
+		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotationX), glm::vec3(1.f, 0.f, 0.f));
+		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotationY), glm::vec3(0.f, 1.f, 0.f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(0.f), glm::vec3(0.f, 0.f, 1.f));
 		//ModelMatrix = glm::perspective(glm::radians(45.0f), (float)640 / (float)480, 0.1f, 100.0f);
 		
@@ -428,10 +430,13 @@ int main() {
 		if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_SPACE)) {
 
 			
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.f, 0.f, -0.001f));
+			//ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.f, 0.f, -0.001f));
 			
 		}
 
+		CameraMovement(window,view);
+		//view = glm::rotate(view, glm::radians(rotationX), glm::vec3(1.f, 0.f, 0.f));
+		//view = glm::rotate(view, glm::radians(rotationY), glm::vec3(0.f, 1.f, 0.f));
 		
 		rotationX = 0;
 		rotationY = 0;
@@ -439,6 +444,8 @@ int main() {
 		glUniformMatrix4fv(matrixLocation, 1, GL_FALSE, glm::value_ptr(ModelMatrix));
 		Proj = glm::perspective(glm::radians(45.0f), (float)640 / (float)480, 0.1f, 100.0f);
 		glUniformMatrix4fv(matrixLocation_1, 1, GL_FALSE, glm::value_ptr(Proj));
+
+		glUniformMatrix4fv(matrixLocation_View, 1, GL_FALSE, glm::value_ptr(view));
 		/* wipe the drawing surface clear */
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//		glUseProgram (shader_programme);
